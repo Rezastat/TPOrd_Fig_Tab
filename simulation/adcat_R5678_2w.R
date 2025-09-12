@@ -277,15 +277,14 @@ clusterEvalQ(cl, {
   library(TPOrd)
 })
 
-# Results initialization
 all_results <- list()
 
-# Run simulations for each n2 value
+#  simulations for each n2 value
 for (n2 in n2_vector) {
   dataset_file_name <- sprintf("%s_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", data_name, array_id, n2, num_cores, m)
 
 
-  # Load the corresponding dataset
+  # Load the  dataset
   load(dataset_file_name)
 
   tasks <- lapply(1:m, function(iter) list(iter = iter, n2 = n2, dat_sim = results[[iter]]$dataset, sample_freq = results[[iter]][["sample_freq"]], seed = results[[iter]][["seed"]]))
@@ -300,7 +299,6 @@ for (n2 in n2_vector) {
   })[3]
 
 
-  # Save results
   save(total.time, results, file = sprintf("%s_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", job_name, array_id, n2, num_cores, m))
 }
 

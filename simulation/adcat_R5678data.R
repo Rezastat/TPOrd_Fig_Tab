@@ -9,13 +9,13 @@ library(TPOrd)
 job_name <- Sys.getenv("JOB_NAME", "propoddsdata_R5678")
 
 
-Sys.setenv(OMP_NUM_THREADS = "1",
-           MKL_NUM_THREADS = "1",
-           OPENBLAS_NUM_THREADS = "1",
-           BLAS_NUM_THREADS = "1",
-           LAPACK_NUM_THREADS = "1",
-           VECLIB_MAXIMUM_THREADS = "1",
-           NUMEXPR_NUM_THREADS = "1")
+Sys.setenv(OMP_NUM_THREADS="1",
+           MKL_NUM_THREADS="1",
+           OPENBLAS_NUM_THREADS="1",
+           BLAS_NUM_THREADS="1",
+           LAPACK_NUM_THREADS="1",
+           VECLIB_MAXIMUM_THREADS="1",
+           NUMEXPR_NUM_THREADS="1")
 
 Sys.getenv("MKL_NUM_THREADS","1")  
 Sys.getenv("MKL_DYNAMIC","FALSE")      
@@ -28,7 +28,7 @@ array_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID", unset=4))
 
 m <- as.numeric(Sys.getenv("ITERATIONS", "128")) # Number of iterations
 mit <- as.numeric(Sys.getenv("MIT", "1"))
-num_cores = as.numeric(Sys.getenv("NUM_CORES", "32"))
+num_cores=as.numeric(Sys.getenv("NUM_CORES", "32"))
 
 
 
@@ -42,7 +42,7 @@ n2_vector <- 1000
 model_type <- "Adjacent_Category"
 Beta0 <- c(-1.10580581,-0.510929214,2.260466119,2.33807856)
 Beta1 <- -0.1238386604
-fam <- acat(reverse =T, parallel = T)
+fam <- acat(reverse =T, parallel=T)
 
 
 
@@ -51,13 +51,13 @@ run_simulation <- function(params) {
   iteration <- params$iter
   n2 <- params$n2
 
-  Sys.setenv(OMP_NUM_THREADS = "1",
-             MKL_NUM_THREADS = "1",
-             OPENBLAS_NUM_THREADS = "1",
-             BLAS_NUM_THREADS = "1",
-             LAPACK_NUM_THREADS = "1",
-             VECLIB_MAXIMUM_THREADS = "1",
-             NUMEXPR_NUM_THREADS = "1")
+  Sys.setenv(OMP_NUM_THREADS="1",
+             MKL_NUM_THREADS="1",
+             OPENBLAS_NUM_THREADS="1",
+             BLAS_NUM_THREADS="1",
+             LAPACK_NUM_THREADS="1",
+             VECLIB_MAXIMUM_THREADS="1",
+             NUMEXPR_NUM_THREADS="1")
 
 
   my_seed <- iteration + 1000 * array_id
@@ -68,16 +68,16 @@ run_simulation <- function(params) {
 
 
 
-  dat_sim <- sim_categorical_data (Beta0 = Beta0 ,# intercept
-                                   Beta1 = Beta1, # effect size of the sequencing variant
+  dat_sim <- sim_categorical_data (Beta0=Beta0 ,# intercept
+                                   Beta1=Beta1, # effect size of the sequencing variant
                                    fractions_cat1 =fractions_cat1,
                                    fractions_cat2 =fractions_cat2,
-                                   target_cor = target_cor,
-                                   N = N, # phase 1  sample size
-                                   n2 = n2, # phase 2 sample size
-                                   cor_YZ_break = cor_YZ_break,
-                                   num_categories = num_categories,
-                                   model_type = model_type)
+                                   target_cor=target_cor,
+                                   N=N, # phase 1  sample size
+                                   n2=n2, # phase 2 sample size
+                                   cor_YZ_break=cor_YZ_break,
+                                   num_categories=num_categories,
+                                   model_type=model_type)
 
 
 
@@ -89,12 +89,12 @@ run_simulation <- function(params) {
   dat_sim$fZ <- factor(dat_sim$Z)
   dat_list <- TPOrd:::sample_dataframe_balanced_matrix(dat_sim, n2, 1000)
 
-  dat = dat_sim[ , c("Y","Z","fZ","YZ")]
+  dat=dat_sim[ , c("Y","Z","fZ","YZ")]
   dat$YZ <- as.numeric(dat$YZ)
 
 
-  fit =  vglm(Y ~ fZ, family = fam, data = dat)
-  fitcoef = c(fit@coefficients[1: (num_categories-1)], 0, fit@coefficients[num_categories: length(fit@coefficients)])
+  fit= vglm(Y ~ fZ, family=fam, data=dat)
+  fitcoef=c(fit@coefficients[1: (num_categories-1)], 0, fit@coefficients[num_categories: length(fit@coefficients)])
 
 
 
@@ -110,17 +110,17 @@ run_simulation <- function(params) {
 
 
   pG <- fractions_cat1
-  resultsgz <- simulateGZ(N, pG, pZ, target_cor, num_sim=3000, plot_results = T)
+  resultsgz <- simulateGZ(N, pG, pZ, target_cor, num_sim=3000, plot_results=T)
 
   p_gz0 <- convertMeanFrequenciesToTable(resultsgz$MeanFrequencies)
 
 
   ### The formula under the null is the same regardless
   formula_Ho <- Y~fZ
-  auxvar = ~Z
-  strataformula_YZ = ~YZ
-  strataformula_Y = ~Y
-  strataformula_Z = ~Z
+  auxvar=~Z
+  strataformula_YZ=~YZ
+  strataformula_Y=~Y
+  strataformula_Z=~Z
 
   optMethod <- "Par-spec" # c("Par-spec","A-opt","D-opt")[1]
 
@@ -189,7 +189,7 @@ run_simulation <- function(params) {
                                       ga.popsize=60,
                                       ga.propelit=0.9,
                                       ga.proptourney=0.9,
-                                      ga.ngen=200, # can change to 500
+                                      ga.ngen=200, 
                                       ga.mutrate=0.001,
                                       ga.initpop=t(cbind(pop1_Y,pop2)),
                                       optimMeasure=optMethod,K.idx=Kind,seed=1)
@@ -206,7 +206,7 @@ run_simulation <- function(params) {
                                        ga.popsize=60,
                                        ga.propelit=0.9,
                                        ga.proptourney=0.9,
-                                       ga.ngen=200, # can change to 500
+                                       ga.ngen=200, 
                                        ga.mutrate=0.001,
                                        ga.initpop=t(cbind(pop1_YZ,pop2)),
                                        optimMeasure=optMethod,K.idx=Kind,seed=1)
@@ -223,7 +223,7 @@ run_simulation <- function(params) {
                                       ga.popsize=60,
                                       ga.propelit=0.9,
                                       ga.proptourney=0.9,
-                                      ga.ngen=200, # can change to 500
+                                      ga.ngen=200, 
                                       ga.mutrate=0.001,
                                       ga.initpop= t(cbind(pop1_Z,pop2)),
                                       optimMeasure=optMethod,K.idx=Kind,seed=1)
@@ -257,9 +257,9 @@ run_simulation <- function(params) {
 
 
   data_list <- list(iteration= iteration,
-                    seed = my_seed,
+                    seed=my_seed,
                     sample_freq=list(com_table=com_table,  R5_table=R5_table, R6_table=R6_table, R7_table=R7_table, R8_table=R8_table),
-                    dataset = dat_sim
+                    dataset=dat_sim
   )
 
 
@@ -272,7 +272,7 @@ closeAllConnections()
 
 
 cl <- makeCluster(num_cores)
-clusterExport(cl, varlist = c(
+clusterExport(cl, varlist=c(
   "array_id", "m", "num_cores",
   "target_cor", "fractions_cat1", "fractions_cat2",
   "N", "cor_YZ_break", "num_categories",
@@ -294,7 +294,7 @@ for (n2 in n2_vector) {
   })[3]
 
   # Save results
-  save(total.time, results, file = sprintf("%s_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", job_name, array_id, n2, num_cores, m))
+  save(total.time, results, file=sprintf("%s_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", job_name, array_id, n2, num_cores, m))
 }
 
 stopCluster(cl)
