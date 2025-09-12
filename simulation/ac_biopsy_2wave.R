@@ -9,7 +9,7 @@ library(TPOrd)
 data("biopsy")
 df <- biopsy
 
-# Assigning column names
+#  column names
 colnames(df) <- c("ID", "ClumpThickness", "CellSize", "CellShape", 
                   "MarginalAdhesion", "SingleEpithelialCellSize", "BareNuclei", 
                   "BlandChromatin", "NormalNucleoli", "Mitoses", "Class")

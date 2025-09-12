@@ -17,8 +17,8 @@ Sys.setenv(OMP_NUM_THREADS = "1",
            VECLIB_MAXIMUM_THREADS = "1",
            NUMEXPR_NUM_THREADS = "1")
 
-Sys.getenv("MKL_NUM_THREADS","1")  # Should return '1'
-Sys.getenv("MKL_DYNAMIC","FALSE")      # Should return 'FALSE'
+Sys.getenv("MKL_NUM_THREADS","1")  
+Sys.getenv("MKL_DYNAMIC","FALSE")      
 
 
 
@@ -32,17 +32,16 @@ num_cores = as.numeric(Sys.getenv("NUM_CORES", "32"))
 
 
 
-# Adjusting parameters using environment variables
-target_cor <- as.numeric(Sys.getenv("TARGET_COR", "0.75"))
-fractions_cat1 <- as.numeric(strsplit(Sys.getenv("FRACTIONS_CAT1", "0.35,0.25,0.2"), ",")[[1]])
-fractions_cat2 <- as.numeric(strsplit(Sys.getenv("FRACTIONS_CAT2", "0.30,0.25,0.25,0.1"), ",")[[1]])
-N <- as.numeric(Sys.getenv("N", "5000"))
-cor_YZ_break <- as.numeric(Sys.getenv("COR_YZ_BREAK", "0.85"))
-num_categories <- as.numeric(Sys.getenv("NUM_CATEGORIES", "5"))
-n2_vector <- as.numeric(strsplit(Sys.getenv("N2_VECTOR", "1000"), ",")[[1]])
+target_cor <- 0.75
+fractions_cat1 <- c(0.35,0.25,0.2)
+fractions_cat2 <- c(0.30,0.25,0.25,0.1)
+N <- 5000
+cor_YZ_break <- 0.85
+num_categories <- 5
+n2_vector <- 1000
 model_type <- "Adjacent_Category"
-Beta0 <- as.numeric(strsplit(Sys.getenv("BETA0", "-1.10580581,-0.510929214,2.260466119,2.33807856"), ",")[[1]])
-Beta1 <- as.numeric(Sys.getenv("BETA1", "-0.1238386604"))
+Beta0 <- c(-1.10580581,-0.510929214,2.260466119,2.33807856)
+Beta1 <- -0.1238386604
 fam <- acat(reverse =T, parallel = T)
 
 

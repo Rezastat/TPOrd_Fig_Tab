@@ -18,16 +18,16 @@ num_cores = as.numeric(Sys.getenv("NUM_CORES", "10"))
 
 
 
-target_cor <- as.numeric(Sys.getenv("TARGET_COR", "0.75"))
-fractions_cat1 <- as.numeric(strsplit(Sys.getenv("FRACTIONS_CAT1", "0.35,0.25,0.2"), ",")[[1]])
-fractions_cat2 <- as.numeric(strsplit(Sys.getenv("FRACTIONS_CAT2", "0.30,0.25,0.25,0.1"), ",")[[1]])
-N <- as.numeric(Sys.getenv("N", "5000"))
-cor_YZ_break <- as.numeric(Sys.getenv("COR_YZ_BREAK", "0.85"))
-num_categories <- as.numeric(Sys.getenv("NUM_CATEGORIES", "5"))
-n2_vector <- as.numeric(strsplit(Sys.getenv("N2_VECTOR", "3500,4000"), ",")[[1]])
+target_cor <- 0.75
+fractions_cat1 <- c(0.35,0.25,0.2)
+fractions_cat2 <- c(0.30,0.25,0.25,0.1)
+N <- 5000
+cor_YZ_break <- 0.85
+num_categories <- 5
+n2_vector <- c(3500,4000)
 model_type <- "Adjacent_Category"
-Beta0 <- as.numeric(strsplit(Sys.getenv("BETA0", "-1.007578022,-0.510263682,2.252233149,2.27519740"), ",")[[1]])
-Beta1 <- as.numeric(Sys.getenv("BETA1", "-0.2068461819"))
+Beta0 <- c(-1.007578022,-0.510263682,2.252233149,2.27519740)
+Beta1 <- -0.2068461819
 fam <- acat(reverse =T, parallel = T)
 
 
@@ -208,7 +208,7 @@ for (n2 in n2_vector) {
     results <- parLapply(cl, tasks, run_simulation)
   })[3]
 
-  # Save results
+  
   save(total.time, results, file = sprintf("adcat_R3R4_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", array_id, n2, num_cores, m))
 }
 

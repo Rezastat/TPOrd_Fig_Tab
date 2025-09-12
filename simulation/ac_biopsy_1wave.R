@@ -9,7 +9,7 @@ library(TPOrd)
 data("biopsy")
 df <- biopsy
 
-# Assigning column names
+# column names
 colnames(df) <- c("ID", "ClumpThickness", "CellSize", "CellShape", 
                   "MarginalAdhesion", "SingleEpithelialCellSize", "BareNuclei", 
                   "BlandChromatin", "NormalNucleoli", "Mitoses", "Class")
@@ -115,9 +115,7 @@ fitcoef = c(fit@coefficients[1: (num_categories-1)], 0, fit@coefficients[num_cat
 
 pZ <- table(dat$Z)[1:(length(table(dat$Z))-1)]/N ## pZ
 
-# Assuming we know the marginal
 pG <- table(dat_sim$G)[1:(length(table(dat_sim$G))-1)]/N
-### summary(fit)
 
 
 Kind <- 1

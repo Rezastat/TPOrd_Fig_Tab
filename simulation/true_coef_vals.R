@@ -15,16 +15,16 @@ num_cores = as.numeric(Sys.getenv("NUM_CORES", "5")) # number of cores we want t
 
 
 
-target_cor <- as.numeric(Sys.getenv("TARGET_COR", "0.75"))
-fractions_cat1 <- as.numeric(strsplit(Sys.getenv("FRACTIONS_CAT1", "0.35,0.25,0.2"), ",")[[1]])
-fractions_cat2 <- as.numeric(strsplit(Sys.getenv("FRACTIONS_CAT2", "0.30,0.25,0.25,0.1"), ",")[[1]])
-N <- as.numeric(Sys.getenv("N", "5000"))
-cor_YZ_break <- as.numeric(Sys.getenv("COR_YZ_BREAK", "0.85"))
-num_categories <- as.numeric(Sys.getenv("NUM_CATEGORIES", "5"))
-n2 <- as.numeric(Sys.getenv("N2", "1000"))
+target_cor <- 0.75
+fractions_cat1 <- c(0.35,0.25,0.2)
+fractions_cat2 <- c(0.30,0.25,0.25,0.1)
+N <- 5000
+cor_YZ_break <- 0.85
+num_categories <- 5
+n2 <- 1000
 model_type = "Stopping_Ratio"
-Beta0 <- as.numeric(strsplit(Sys.getenv("BETA0", "0.6,0.2,-0.7,0.4"), ",")[[1]])
-Beta1 <- as.numeric(Sys.getenv("BETA1", "-0.25"))
+Beta0 <- c(0.6,0.2,-0.7,0.4)
+Beta1 <- -0.25
 
 
 
@@ -35,7 +35,7 @@ tru_simulation <- function(iteration) {
   set.seed(my_seed)
   
   dat_sim <- sim_categorical_data (Beta0 = Beta0 ,# intercept
-                                   Beta1 = Beta1, # effect size of the sequencing variant
+                                   Beta1 = Beta1, # effect size 
                                    fractions_cat1 =fractions_cat1,
                                    fractions_cat2 =fractions_cat2,
                                    target_cor = target_cor,
@@ -48,17 +48,14 @@ tru_simulation <- function(iteration) {
   mod_propodds <- vglm(Y ~ G1, family = propodds(reverse = FALSE), data = dat_sim)
   mod_acat <- vglm(Y ~ G1, family = acat(reverse = TRUE, parallel = TRUE), data = dat_sim)
   mod_sratio <- vglm(Y ~ G1, family = sratio(reverse = FALSE, parallel = TRUE), data = dat_sim)
-  # mod_stereotype <- OSM_Weighted(factor(Y) ~ G1, data = dat_sim)
-  
+
   # get coefficients
   coefs_propodds <- coef(mod_propodds)
   coefs_acat <- coef(mod_acat)
   coefs_sratio <- coef(mod_sratio)
-  # coefs_stereotype <- c(mod_stereotype$phi[2:(dim(mod_stereotype$phi)[1]-1), 1] ,
-  #                       mod_stereotype$alpha[2:(dim(mod_stereotype$alpha)[1]), 1] ,
-  #                       mod_stereotype$beta[1, 1])
+
   
-  # Compute probability matrices
+  # probability matrices
   prop_odds_pmat <- calc_pvals(coef(mod_propodds)[1:(num_categories-1)], coef(mod_propodds)[num_categories], "Proportional_Odds", num_categories, 1:(length(fractions_cat1) + 1))
   adjac_cat_pmat <- calc_pvals(coef(mod_acat)[1:(num_categories-1)], coef(mod_acat)[num_categories], "Adjacent_Category", num_categories, 1:(length(fractions_cat1) + 1))
   stop_ratio_pmat <- calc_pvals(coef(mod_sratio)[1:(num_categories-1)], coef(mod_sratio)[num_categories], "Stopping_Ratio", num_categories, 1:(length(fractions_cat1) + 1))
@@ -91,7 +88,6 @@ stopCluster(cl)
 coefs_propodds <- do.call(rbind, lapply(results, `[[`, "coefs_propodds"))
 coefs_acat <- do.call(rbind, lapply(results, `[[`, "coefs_acat"))
 coefs_sratio <- do.call(rbind, lapply(results, `[[`, "coefs_sratio"))
-# coefs_stereotype <- do.call(rbind, lapply(results, `[[`, "coefs_stereotype"))
 
 
 seeds <- sapply(results, `[[`, "seed")
@@ -100,7 +96,6 @@ seeds <- sapply(results, `[[`, "seed")
 prop_odds_pmat_combined <- do.call(rbind, lapply(results, `[[`, "prop_odds_pmat"))
 adjac_cat_pmat_combined <- do.call(rbind, lapply(results, `[[`, "adjac_cat_pmat"))
 stop_ratio_pmat_combined <- do.call(rbind, lapply(results, `[[`, "stop_ratio_pmat"))
-# stereotype_pmat_combined <- do.call(rbind, lapply(results, `[[`, "stereotype_pmat"))
 
 all_pmat <- rbind(prop_odds_pmat_combined,adjac_cat_pmat_combined,stop_ratio_pmat_combined) # ,stereotype_pmat_combined)
 model_type_vector <- c(rep("Proportional_Odds", m*(length(fractions_cat1) + 1)), rep("Adjacent_Category", m*(length(fractions_cat1) + 1)), rep("Stopping_Ratio", m*(length(fractions_cat1) + 1)))
