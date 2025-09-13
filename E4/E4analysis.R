@@ -7,6 +7,8 @@ library(gridExtra)
 library(tinytex)
 library(stringr)
 
+
+# the dataset can be provided by the corresponding author upon reasonable request
 load("stats_matrix_e4.RData")
 
 model_type_labels <- c(
