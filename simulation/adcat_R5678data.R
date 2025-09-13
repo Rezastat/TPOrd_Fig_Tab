@@ -6,7 +6,7 @@
 library(parallel)
 library(TPOrd)
 
-job_name <- Sys.getenv("JOB_NAME", "propoddsdata_R5678")
+job_name <- Sys.getenv("JOB_NAME", "Experiment1_adcat2wdata_R5678_BETA1_25")
 
 
 Sys.setenv(OMP_NUM_THREADS="1",
@@ -293,7 +293,6 @@ for (n2 in n2_vector) {
     results <- parLapply(cl, tasks, run_simulation)
   })[3]
 
-  # Save results
   save(total.time, results, file=sprintf("%s_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", job_name, array_id, n2, num_cores, m))
 }
 

@@ -6,8 +6,8 @@
 library(parallel)
 library(TPOrd)
 
-job_name <- Sys.getenv("JOB_NAME", "stopratanalysis")
-data_name <- Sys.getenv("DATA_NAME")
+job_name <- Sys.getenv("JOB_NAME", "Experiment1_adcat_R5678_BETA1_25")
+data_name <- Sys.getenv("DATA_NAME", "Experiment1_adcat_R5678data_BETA1_25")
 
 Sys.setenv(OMP_NUM_THREADS="1",
            MKL_NUM_THREADS="1",
@@ -21,7 +21,7 @@ Sys.getenv("MKL_NUM_THREADS","1")
 Sys.getenv("MKL_DYNAMIC","FALSE")      
 
 
-array_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID", unset=4))
+array_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID", unset=1))
 
 
 

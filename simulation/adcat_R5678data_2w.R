@@ -6,7 +6,7 @@
 library(parallel)
 library(TPOrd)
 
-job_name <- Sys.getenv("JOB_NAME","Experiment1_adcat2wdata_R5678_BETA1_25")
+job_name <- Sys.getenv("JOB_NAME","Experiment5_adcat2wdata_R5678_BETA1_25")
 
 Sys.setenv(OMP_NUM_THREADS="1",
            MKL_NUM_THREADS="1",
