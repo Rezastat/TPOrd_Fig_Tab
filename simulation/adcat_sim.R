@@ -13,19 +13,19 @@ array_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID", unset=1))
 
 
 
-m <- as.numeric(Sys.getenv("ITERATIONS", "10")) # Number of iterations
-mit <- as.numeric(Sys.getenv("MIT", "3"))
-num_cores=as.numeric(Sys.getenv("NUM_CORES", "10"))
+m <- as.numeric(Sys.getenv("ITERATIONS", "3")) # Number of iterations
+
+num_cores=as.numeric(Sys.getenv("NUM_CORES", "3"))
 
 
 
 target_cor <- 0.75
 fractions_cat1 <- c(0.35,0.25,0.2)
 fractions_cat2 <- c(0.30,0.25,0.25,0.1)
-N <- 5000
+N <- 5000 # Phase 1 size
 cor_YZ_break <- 0.85
 num_categories <- 5
-n2_vector <- 1000
+n2_vector <- 2000 # phase 2 sample size. can be a vector. 
 model_type <- "Adjacent_Category"
 Beta0 <- c(-1.007578022,-0.510263682,2.252233149,2.27519740)
 Beta1 <- -0.2068461819
@@ -210,7 +210,6 @@ for (n2 in n2_vector) {
     results <- parLapply(cl, tasks, run_simulation)
   })[3]
 
-  # Save results
   save(total.time, results, file=sprintf("adcat_data_arrayid_%d_n2_%d_cores_%d_iterations_%d.RData", array_id, n2, num_cores, m))
 }
 

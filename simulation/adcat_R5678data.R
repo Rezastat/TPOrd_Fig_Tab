@@ -35,10 +35,10 @@ num_cores=as.numeric(Sys.getenv("NUM_CORES", "32"))
 target_cor <- 0.75
 fractions_cat1 <- c(0.35,0.25,0.2)
 fractions_cat2 <- c(0.30,0.25,0.25,0.1)
-N <- 5000
+N <- 5000 # Phase 1 size
 cor_YZ_break <- 0.85
 num_categories <- 5
-n2_vector <- 1000
+n2_vector <- 1000 # phase 2 sample size. can be a vector.
 model_type <- "Adjacent_Category"
 Beta0 <- c(-1.10580581,-0.510929214,2.260466119,2.33807856)
 Beta1 <- -0.1238386604

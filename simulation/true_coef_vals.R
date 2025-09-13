@@ -18,10 +18,10 @@ num_cores=as.numeric(Sys.getenv("NUM_CORES", "5")) # number of cores we want to 
 target_cor <- 0.75
 fractions_cat1 <- c(0.35,0.25,0.2)
 fractions_cat2 <- c(0.30,0.25,0.25,0.1)
-N <- 5000
+N <- 5000 # Phase 1 size
 cor_YZ_break <- 0.85
 num_categories <- 5
-n2 <- 1000
+n2 <- 1000 # phase 2 sample size. can be a vector.
 model_type="Stopping_Ratio"
 Beta0 <- c(0.6,0.2,-0.7,0.4)
 Beta1 <- -0.25
@@ -83,7 +83,8 @@ stopCluster(cl)
 
 ############
 
-#  coefficients for each model type
+#  coefficients for each model type (we will take the mean of all iterations and use it as true values 
+# for generating the simulations corresponding to the adjacent category and cumulative logit models)
 coefs_propodds <- do.call(rbind, lapply(results, `[[`, "coefs_propodds"))
 coefs_acat <- do.call(rbind, lapply(results, `[[`, "coefs_acat"))
 coefs_sratio <- do.call(rbind, lapply(results, `[[`, "coefs_sratio"))

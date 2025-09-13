@@ -26,10 +26,10 @@ m <- as.numeric(Sys.getenv("ITERATIONS","1"))
 num_cores=as.numeric(Sys.getenv("NUM_CORES","1"))
 
 
-N <- 5000
+N <- 5000 # Phase 1 size
 cor_YZ_break <- 0.75
 num_categories <- 5
-n2_vector <- 1000
+n2_vector <- 1000 # phase 2 sample size. can be a vector.
 model_type <-  "Adjacent_Category"
 Beta0 <- c(-1.007578022,-0.510263682,2.252233149,2.27519740)
 Beta1 <- -0.1238386604
