@@ -26,8 +26,8 @@ array_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID", unset=4))
 
 
 
-m <- as.numeric(Sys.getenv("ITERATIONS", "1")) # Number of iterations
-num_cores = as.numeric(Sys.getenv("NUM_CORES", "1"))
+m <- as.numeric(Sys.getenv("ITERATIONS", "3")) # Number of iterations
+num_cores = as.numeric(Sys.getenv("NUM_CORES", "3"))
 
 
 

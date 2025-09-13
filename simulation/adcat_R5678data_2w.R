@@ -22,8 +22,8 @@ Sys.getenv("MKL_DYNAMIC","FALSE")
 
 array_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID",unset=1))
 
-m <- as.numeric(Sys.getenv("ITERATIONS","1"))
-num_cores=as.numeric(Sys.getenv("NUM_CORES","1"))
+m <- as.numeric(Sys.getenv("ITERATIONS","3"))
+num_cores=as.numeric(Sys.getenv("NUM_CORES","3"))
 
 
 N <- 5000 # Phase 1 size
